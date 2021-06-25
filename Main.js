@@ -1376,7 +1376,7 @@ function init_buttons() {
 		buttons.append($("<button style='display:inline; width:75px;' id='select-button' class='drawbutton' data-shape='select'>SELECT</button>"));
 		
 	buttons.append($("<button style='display:inline;width:75px;;' id='measure-button' class='drawbutton' data-shape='measure'>RULER</button>"));
-	fog_button = $("<button style='display:inline;width:75px;' id='fog_button'>FOG</button>");
+	fog_button = $("<button style='display:inline;width:75px;' id='fog_button' class='drawbutton menu-button'>FOG</button>");
 	
 	if (window.DM)
 		buttons.append(fog_button);
@@ -1439,7 +1439,7 @@ function init_buttons() {
 
 	$("body").append(draw_menu);
 
-	draw_button = $("<button style='display:inline;width:75px' id='draw_button'>DRAW</button>");
+	draw_button = $("<button style='display:inline;width:75px' id='draw_button class='drawbutton menu-button''>DRAW</button>");
 
 	if (window.DM){
 		buttons.append(draw_button);
