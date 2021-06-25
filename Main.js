@@ -1439,7 +1439,7 @@ function init_buttons() {
 
 	$("body").append(draw_menu);
 
-	draw_button = $("<button style='display:inline;width:75px' id='draw_button' class='drawbutton menu-button''>DRAW</button>");
+	draw_button = $("<button style='display:inline;width:75px' id='draw_button' class='drawbutton menu-button'>DRAW</button>");
 
 	if (window.DM){
 		buttons.append(draw_button);
