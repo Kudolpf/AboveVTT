@@ -772,9 +772,9 @@ function init_scene_selector() {
 	ss.append(addblock);
 
 
-	let toggle = $("<button id='scene_selector_toggle'>SCENES</button>");
+	let toggle = $("<button id='scene_selector_toggle' class='hasTooltip button-icon' data-name='Scenes'><img src='"+window.EXTENSION_PATH + "assets/icons/scenes.svg' height='100%;'></button>");
 	toggle.css('position', 'fixed');
-	toggle.css('width', '75px');
+	//toggle.css('width', '75px');
 	toggle.css('top', '5px'); // IMPORTANT
 	toggle.css('left', '325px');
 	toggle.css('z-index', '9999')

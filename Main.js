@@ -1318,10 +1318,10 @@ function init_buttons() {
 	$("body").append(buttons);
 	
 	if (window.DM)
-		buttons.append($("<button style='display:inline; width:75px;' id='select-button' class='drawbutton' data-shape='select'><u>S</u>ELECT</button>"));
+		buttons.append($("<button style='display:inline;' id='select-button' class='drawbutton hasTooltip button-icon' data-name='Select (S)' shape='select'><img src='"+window.EXTENSION_PATH + "assets/icons/select.svg' height='100%;'></button>"));
 		
-	buttons.append($("<button style='display:inline;width:75px;;' id='measure-button' class='drawbutton' data-shape='measure'><u>R</u>ULER</button>"));
-	fog_button = $("<button style='display:inline;width:75px;' id='fog_button' class='drawbutton menu-button'><u>F</u>OG</button>");
+	buttons.append($("<button style='display:inline;;' id='measure-button' class='drawbutton hasTooltip button-icon' data-name='Ruler (R)' data-shape='measure'><span class='material-icons button-icon'>straighten</span></button>"));
+	fog_button = $("<button style='display:inline;' id='fog_button' class='drawbutton menu-button hasTooltip button-icon' data-name='Fog (F)'><span class='material-icons button-icon'>cloud_queue</span></button>");
 	
 	if (window.DM)
 		buttons.append(fog_button);
@@ -1384,7 +1384,7 @@ function init_buttons() {
 
 	$("body").append(draw_menu);
 
-	draw_button = $("<button style='display:inline;width:75px' id='draw_button' class='drawbutton menu-button'><u>D</u>RAW</button>");
+	draw_button = $("<button style='display:inline;' id='draw_button' class='drawbutton menu-button hasTooltip button-icon' data-name='Draw (D)'><span class='material-icons button-icon'>category</span></button>");
 
 	if (window.DM){
 		buttons.append(draw_button);
