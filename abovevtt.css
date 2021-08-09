@@ -143,15 +143,18 @@ button[id$='-button'].button-enabled:hover {
 
 .scene {
     border-radius: 5px;
-    border: 1px solid #3d3d3d !important;
-    width: 100px;
-    height: 100px;
+    border: 1px solid #3d3d3d;
+    width: 171px;
+    height: 50px;
+    float: left;
+    overflow: hidden;
+    margin: 5px;
     background: #f9f9f9 url(../images/background_texture.png) repeat !important;
 }
 
 .sortable_placeholder {
-    width: 100px;
-    height: 100px;
+    width: 171px;
+    height: 50px;
     border: 1px dashed #3d3d3d !important;
     background-image: -webkit-linear-gradient(270deg, #f7a6a6, #ff7777);
     float: left;
@@ -325,6 +328,16 @@ div#scene_properties form > div {
     z-index: 9999;
     border: solid black 2px;
     overflow: scroll;
+}
+
+#scene_selector .scene_title {
+    cursor: move;
+    font-weight: bold;
+}
+
+.active_scene {
+    box-shadow: 0px 0px 15px -4px #ff7777;
+    border: 1px solid #ff7777;
 }
 
 .stp-btn {

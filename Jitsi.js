@@ -1,6 +1,7 @@
 
 function create_jitsi_button() {
-	b = $("<buttonid='jitsi_switch' class='hasTooltip button-icon' data-name='Connect video call'><span>VIDEO</span><span class='material-icons button-icon'>video_call</span></button>");
+	b = $("<button id='jitsi_switch' class='hasTooltip button-icon' data-name='Connect video call'><span>VIDEO</span><span class='material-icons button-icon'>video_call</span></button>");
+	b.css("position", "fixed");
 	b.css("bottom", "3px");
 	b.css("left", "3px");
 	b.css("gap", "6px");

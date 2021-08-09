@@ -693,14 +693,14 @@ function refresh_scenes() {
 	for (var i = 0; i < window.ScenesHandler.scenes.length; i++) {
 		let scene_id = i;
 		var scene = window.ScenesHandler.scenes[i];
-		var newobj = $("<div class='scene' style='float:left;overflow: hidden;display:block;border: 1px solid black;margin: 5px;'/>");
+		var newobj = $("<div class='scene'/>");
 
 
 		title = $("<div class='scene_title' style='text-align:center;'/>");
 		title.html(scene.title);
 
 		if (i == window.ScenesHandler.current_scene_id)
-			title.css('background', 'red');
+			newobj.addClass('active_scene');
 		newobj.append(title);
 		controls = $("<div/>");
 		switch_button = $("<button>SWITCH</button>");
@@ -729,7 +729,8 @@ function refresh_scenes() {
 		controls.append(delete_button);
 		newobj.append(controls);
 
-		target.append(newobj);
+		//target.append(newobj);
+		$("#addscene").parent().before(newobj);
 
 		$("#scene_selector").sortable({
 			handle: ".scene_title",
@@ -745,7 +746,7 @@ function init_scene_selector() {
 
 
 	addblock = $("<div style='float:left;overflow: hidden;display:block;'/>");
-	addbutton = $("<button id='addscene'>ADDSCENE</button>");
+	addbutton = $("<button id='addscene'><span class='material-icons button-icon md-dark md-32'>add</span></button></button>");
 
 	addbutton.click(function() {
 		window.ScenesHandler.scenes.push({
