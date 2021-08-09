@@ -696,7 +696,7 @@ function refresh_scenes() {
 		var newobj = $("<div class='scene' style='float:left;overflow: hidden;display:block;border: 1px solid black;margin: 5px;'/>");
 
 
-		title = $("<div style='text-align:center;'/>");
+		title = $("<div class='scene_title' style='text-align:center;'/>");
 		title.html(scene.title);
 
 		if (i == window.ScenesHandler.current_scene_id)
@@ -730,6 +730,12 @@ function refresh_scenes() {
 		newobj.append(controls);
 
 		target.append(newobj);
+
+		$("#scene_selector").sortable({
+			handle: ".scene_title",
+			forcePlaceholderSize: true,
+			placeholder: "sortable_placeholder"
+		});
 	}
 }
 
