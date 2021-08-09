@@ -741,10 +741,7 @@ function refresh_scenes() {
 
 function init_scene_selector() {
 	ss = $("<div  id='scene_selector' />");
-	ss.css('position', 'fixed');
-	ss.css('height', 0);
-	ss.css('top', '0px');
-	ss.css('left', '250px');
+	ss.hide();
 
 
 	addblock = $("<div style='float:left;overflow: hidden;display:block;'/>");
@@ -778,31 +775,16 @@ function init_scene_selector() {
 	ss.append(addblock);
 
 
-	let toggle = $("<button id='scene_selector_toggle'>SCENES</button>");
-	toggle.css('position', 'fixed');
-	toggle.css('width', '75px');
-	toggle.css('top', '5px'); // IMPORTANT
-	toggle.css('left', '325px');
-	toggle.css('z-index', '9999')
+	let toggle = $("<button id='scene_selector_toggle'>SCENES<span class='material-icons md-dark md-16'>expand_more</span></button>");
 
 	toggle.click(function() {
-		if (toggle.css('top') == "5px") {
-			toggle.animate({
-				top: '200px',
-			}, 500);
-			ss.animate({
-				height: '200px'
-			}, 500);
-			ss.css("overflow","auto");
+		if (ss.hasClass("menu_opened")) {
+			ss.slideUp().removeClass("menu_opened");
+			toggle.removeClass("menu_opened");
+		} else {
+			ss.slideDown().addClass("menu_opened");
+			toggle.addClass("menu_opened");
 			refresh_scenes();
-		}
-		else {
-			toggle.animate({
-				top: '5px',
-			}, 500);
-			ss.animate({
-				height: '0px'
-			}, 500);
 		}
 	});
 	$(window.document.body).append(ss);
