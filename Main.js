@@ -345,13 +345,13 @@ function init_controls() {
 	b1.append('<svg class="gamelog-button__icon" width="18" height="18" viewBox="0 0 18 18"><path fill-rule="evenodd" clip-rule="evenodd" d="M15 10C15 10.551 14.551 11 14 11H9C8.735 11 8.48 11.105 8.293 11.293L6 13.586V12C6 11.447 5.552 11 5 11H4C3.449 11 3 10.551 3 10V4C3 3.449 3.449 3 4 3H14C14.551 3 15 3.449 15 4V10ZM14 1H4C2.346 1 1 2.346 1 4V10C1 11.654 2.346 13 4 13V16C4 16.404 4.244 16.77 4.617 16.924C4.741 16.975 4.871 17 5 17C5.26 17 5.516 16.898 5.707 16.707L9.414 13H14C15.654 13 17 11.654 17 10V4C17 2.346 15.654 1 14 1ZM12 6H6C5.448 6 5 6.447 5 7C5 7.553 5.448 8 6 8H12C12.552 8 13 7.553 13 7C13 6.447 12.552 6 12 6Z" fill="currentColor"></path></svg>');
 	$(".sidebar__controls").append(b1);
 
-	if (DM) {
-		b2 = $("<button id='switch_characters' class='tab-btn hasTooltip button-icon' data-name='Players'' data-target='#pcs_list'></button>").click(switch_control);
-		b2.append("<img src='"+window.EXTENSION_PATH + "assets/icons/character.svg' height='100%;'>");
+	b2 = $("<button id='switch_characters' class='tab-btn hasTooltip button-icon' data-name='Players'' data-target='#pcs_list'></button>").click(switch_control);
+	b2.append("<img src='"+window.EXTENSION_PATH + "assets/icons/character.svg' height='100%;'>");
+	$(".sidebar__controls").append(b2);
+	if (DM) {		
 		
-		
-		$(".sidebar__controls").append(b2);
-		b3 = $("<button id='switch_panel' class='tab-btn hasTooltip button-icon' data-name='Monsters' data-target='#monster-panel'></button>").click(switch_control);
+		b3 = $("<button id='switch_panel' class='tab-btn' data-target='#monster-panel'></button>").click(switch_control);
+
 		b3.append("<img src='"+window.EXTENSION_PATH + "assets/icons/mimic-chest.svg' height='100%;'>");
 		$(".sidebar__controls").append(b3);
 		init_tokenmenu();
@@ -1032,6 +1032,7 @@ function init_ui() {
 	$("#chat-text").on('keypress', function(e) {
 		if (e.keyCode == 13) {
 			var dmonly=false;
+			var whisper=null;
 			e.preventDefault();
 			text = $("#chat-text").val();
 			$("#chat-text").val("");
@@ -1049,6 +1050,14 @@ function init_ui() {
 				dmonly=true;
 			}
 			
+			if(text.startsWith("/whisper")) {
+				let matches = text.match(/\[(.*?)\] (.*)/);
+				console.log(matches);
+				whisper=matches[1]
+				text="[Whispered to: "+whisper+"]" +matches[2];
+			}
+			
+			
 			if(validateUrl(text)){
 				
 				text="<img width=200 src='"+parse_img(text)+"'>";
@@ -1060,6 +1069,10 @@ function init_ui() {
 				text: text,
 				dmonly: dmonly,
 			};
+			
+			if(whisper)
+				data.whisper=whisper;
+				
 			window.MB.inject_chat(data);
 			
 		}
@@ -1190,7 +1203,7 @@ function init_ui() {
 	}
 
 	init_controls();
-	if (window.DM)
+	//if (window.DM)
 		init_pclist();
 
 	$(".sidebar__pane-content").css("background", "rgba(255,255,255,1)");
@@ -1336,7 +1349,7 @@ function init_buttons() {
 	var clear_button = $("<button style='width:75px;'>ALL</button>");
 	clear_button.click(function() {
 
-		r = confirm("This will delete all FOG zones and REVEAL ALL THE MAP to the player. Are you sure?");
+		r = confirm("This will delete all FOG zones and REVEAL ALL THE MAP to the player. THIS CANNOT BE UNDONE. Are you sure?");
 		if (r == true) {
 			window.REVEALED = [[0, 0, $("#scene_map").width(), $("#scene_map").height()]];
 			redraw_canvas();
@@ -1347,7 +1360,7 @@ function init_buttons() {
 
 	var hide_all_button = $("<button style='width:75px;'>ALL</button>");
 	hide_all_button.click(function() {
-		r = confirm("This will delete all FOG zones and HIDE ALL THE MAP to the player. Are you sure?");
+		r = confirm("This will delete all FOG zones and HIDE ALL THE MAP to the player. THIS CANNOT BE UNDONE. Are you sure?");
 		if (r == true) {
 			window.REVEALED = [];
 			redraw_canvas();
@@ -1368,11 +1381,18 @@ function init_buttons() {
 	fog_menu.append("<div><button id='fog_circle_h' style='width:75px' class='drawbutton menu-option fog-option' data-shape='arc' data-type=1>Circle</button></div>");
 	fog_menu.append("<div><button id='fog_polygon_h' style='width:75px' class='drawbutton menu-option fog-option' data-shape='polygon' data-type=1>Polygon</button></div>");
 	fog_menu.append($("<div/>").append(hide_all_button));
+	fog_menu.append("<div><button id='fog_undo' style='width:75px'>UNDO</button></div>")
 	fog_menu.css("position", "fixed");
 	fog_menu.css("top", "25px");
 	fog_menu.css("width", "75px");
 	fog_menu.css('background', "url('/content/1-0-1487-0/skins/waterdeep/images/mon-summary/paper-texture.png')")
 	$("body").append(fog_menu);
+	fog_menu.find("#fog_undo").click(function(){
+		window.REVEALED.pop();
+		redraw_canvas();
+		window.ScenesHandler.persist();
+		window.ScenesHandler.sync();
+	});
 	
 
 	buttons = $("<div/>")
@@ -1395,16 +1415,26 @@ function init_buttons() {
 	draw_menu.append("<div><button id='draw_line' style='width:75px' class='drawbutton menu-option draw-option' data-shape='line' data-type='draw'>Line</button></div>");
 	draw_menu.append("<div><button id='draw_polygon' style='width:75px' class='drawbutton menu-option draw-option' data-shape='polygon' data-type='draw'>Polygon</button></div>");
 	draw_menu.append("<div><button id='draw_erase' style='width:75px' class='drawbutton menu-option draw-option' data-shape='rect' data-type='eraser'>Erase</button></div>");
-	draw_menu.append("<div><button id='delete_drawing'style='width:75px;height: 38px;'>ERASE ALL</button></div>");
+	
+	draw_menu.append("<div><button id='draw_undo' style='width:75px'>UNDO</button></div>");
+	
+	draw_menu.append("<div><button id='delete_drawing' style='width:75px'>CLEAR</button></div>");
 
 	draw_menu.find("#delete_drawing").click(function() {
-		r = confirm("DELETE ALL DRAWINGS?");
+		r = confirm("DELETE ALL DRAWINGS? (cannot be undone!)");
 		if (r === true) {
 			window.DRAWINGS = [];
 			redraw_drawings();
 			window.ScenesHandler.persist();
 			window.ScenesHandler.sync();
 		}
+	});
+	
+	draw_menu.find("#draw_undo").click(function() {
+		window.DRAWINGS.pop();
+		redraw_drawings();
+		window.ScenesHandler.persist();
+		window.ScenesHandler.sync();
 	});
 
 	colors = $("<div/>");
