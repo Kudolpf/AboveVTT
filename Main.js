@@ -318,7 +318,7 @@ function init_controls() {
 
 	$("span.sidebar__control-group.sidebar__control-group--lock > button").click(); // CLICKA SU lucchetto
 	$(".sidebar__controls").empty();
-	hider = $("<button id='hide_rightpanel' class='hasTooltip button-icon' data-name='Show/hide sidebar (q)' data-visible=1></button>").click(function() {
+	hider = $("<button id='hide_rightpanel' class='hasTooltip button-icon hideable' data-name='Show/hide sidebar (q)' data-visible=1></button>").click(function() {
 		if ($(this).attr('data-visible') == 1) {
 			$(this).attr('data-visible', 0);
 			$(".sidebar--right").animate({ "right": "-340px" }, 500);
@@ -838,10 +838,10 @@ function open_player_sheet(sheet_url) {
 	$("#site").append(container);
 
 	if (!window.DM) {
-		sheet_button = $("<button id='sheet_button'>SHEET</button>");
+		sheet_button = $("<button id='sheet_button' class='hasTooltip button-icon hideable' data-name='Show/hide character sheet (SPACE)'>SHEET</button>");
 		sheet_button.css("position", "absolute");
 		sheet_button.css("top", 0);
-		sheet_button.css("left", -80);
+		sheet_button.css("left", -86);
 		sheet_button.css("z-index", 999999);
 
 		$(".sidebar__controls").append(sheet_button);
@@ -1210,17 +1210,27 @@ function init_ui() {
 	// ZOOM BUTTON
 	zoom_section = $("<div id='zoom_buttons' />");
 
-	zoom_center = $("<button id='zoom_fit' class='hasTooltip button-icon' data-name='fit screen (0)'><span class='material-icons button-icon'>fit_screen</span></button>");
+	zoom_center = $("<button id='zoom_fit' class='hasTooltip button-icon hideable' data-name='fit screen (0)'><span class='material-icons button-icon'>fit_screen</span></button>");
 	zoom_center.click(reset_zoom);
 	zoom_section.append(zoom_center);
 
-	zoom_minus = $("<button id='zoom_minus' class='hasTooltip button-icon' data-name='zoom out (-)'><span class='material-icons button-icon'>zoom_out</span></button>");
+	zoom_minus = $("<button id='zoom_minus' class='hasTooltip button-icon hideable' data-name='zoom out (-)'><span class='material-icons button-icon'>zoom_out</span></button>");
 	zoom_minus.click(decrease_zoom)
 	zoom_section.append(zoom_minus);
 
-	zoom_plus = $("<button id='zoom_plus' class='hasTooltip button-icon' data-name='zoom in (+)'><span class='material-icons button-icon'>zoom_in</span></button>");
+	zoom_plus = $("<button id='zoom_plus' class='hasTooltip button-icon hideable' data-name='zoom in (+)'><span class='material-icons button-icon'>zoom_in</span></button>");
 	zoom_plus.click(increase_zoom);
 	zoom_section.append(zoom_plus);
+
+	hide_interface = $(`<button id='hide_interface_button' class='hasTooltip button-icon' data-name='Unhide interface (shift+h)'><span class='material-icons md-16 button-icon'>visibility</span></button>`);
+	hide_interface.click(unhide_interface);
+	hide_interface.css("display", "none");
+	hide_interface.css("position", "absolute");
+	hide_interface.css("opacity", "50%");
+	hide_interface.css("right", "-136px");
+	zoom_section.append(hide_interface);
+
+
 
 	if(window.DM) {
 		zoom_section.css("left","-136px");
@@ -1369,10 +1379,10 @@ function init_buttons() {
 	$("body").append(buttons);
 	
 	if (window.DM)
-		buttons.append($("<button style='display:inline; width:75px;' id='select-button' class='drawbutton' data-shape='select'><u>S</u>ELECT</button>"));
+		buttons.append($("<button style='display:inline; width:75px;' id='select-button' class='drawbutton hideable' data-shape='select'><u>S</u>ELECT</button>"));
 		
-	buttons.append($("<button style='display:inline;width:75px;;' id='measure-button' class='drawbutton' data-shape='measure'><u>R</u>ULER</button>"));
-	fog_button = $("<button style='display:inline;width:75px;' id='fog_button' class='drawbutton menu-button'><u>F</u>OG</button>");
+	buttons.append($("<button style='display:inline;width:75px;;' id='measure-button' class='drawbutton hideable' data-shape='measure'><u>R</u>ULER</button>"));
+	fog_button = $("<button style='display:inline;width:75px;' id='fog_button' class='drawbutton menu-button hideable'><u>F</u>OG</button>");
 	
 	if (window.DM)
 		buttons.append(fog_button);
@@ -1435,7 +1445,7 @@ function init_buttons() {
 
 	$("body").append(draw_menu);
 
-	draw_button = $("<button style='display:inline;width:75px' id='draw_button' class='drawbutton menu-button'><u>D</u>RAW</button>");
+	draw_button = $("<button style='display:inline;width:75px' id='draw_button' class='drawbutton menu-button hideable'><u>D</u>RAW</button>");
 
 	if (window.DM){
 		buttons.append(draw_button);
@@ -1443,7 +1453,7 @@ function init_buttons() {
 		
 	}
 
-	buttons.append("<button style='display:inline;width:75px' id='help_button'>HELP</button>");
+	buttons.append("<button style='display:inline;width:75px' id='help_button' class='hideable'>HELP</button>");
 
 	buttons.css("position", "fixed");
 	buttons.css("top", '5px');
@@ -1471,7 +1481,8 @@ function init_buttons() {
 }
 
 function init_stream_button() {
-	var stream_button = $("<button id='stream_button' class='hasTooltip button-icon' data-name='Stream dice rolls'></button>");
+	var stream_button = $("<button id='stream_button' class='hasTooltip button-icon hideable' data-name='Stream dice rolls'></button>");
+	stream_button.attr("data-name", "SHARE/SEE player's DDB dice rolling visuals (Experimental/stable).\nDisclaimer: currently shows dice in low resolution in the first few rolls, then it gets better.\nOn by default = RED.");
 	stream_button.append("<img height='20px' src='"+window.EXTENSION_PATH+ "assets/dice/d6.png'>");
 	stream_button.append("<img height='20px' src='"+window.EXTENSION_PATH + "assets/icons/share.svg'>");
 
@@ -1694,6 +1705,14 @@ function init_help_menu() {
 						<dl>
 							<dt>ALT (held)</dt>
 							<dd>Temporarily activate ruler</dd>
+						<dl>
+						<dl>
+							<dt>SHIFT+H</dt>
+							<dd>Hide buttons from screen (spectator mode)</dd>
+						<dl>
+						<dl>
+							<dt>SHIFT+Click</dt>
+							<dd>Select multiple tokens</dd>
 						<dl>
 						<dl>
 							<dt>UP/DOWN arrows</dt>

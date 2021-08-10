@@ -776,7 +776,7 @@ function init_scene_selector() {
 	ss.append(addblock);
 
 
-	let toggle = $("<button id='scene_selector_toggle'>SCENES<span class='material-icons md-dark md-16'>expand_more</span></button>");
+	let toggle = $("<button id='scene_selector_toggle' class='hideable'>SCENES<span class='material-icons md-dark md-16'>expand_more</span></button>");
 
 	toggle.click(function() {
 		if (ss.hasClass("menu_opened")) {

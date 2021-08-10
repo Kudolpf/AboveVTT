@@ -393,9 +393,15 @@ div#scene_properties form > div {
     z-index: 100;
     left: 50%;
     font-size: 11px;
-    bottom: -24px;
+    top: 140%;
     transform: translate(-50%);
     transition: 0.1s ease-in-out 0.2s;
+}
+
+.hasTooltip#stream_button:after {
+    width: 200px;
+    text-align: left;
+    white-space: break-spaces;
 }
 
 .hasTooltip.VTTToken::after {
